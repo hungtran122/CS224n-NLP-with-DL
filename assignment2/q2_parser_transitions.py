@@ -75,10 +75,26 @@ def minibatch_parse(sentences, model, batch_size):
                       Ordering should be the same as in sentences (i.e., dependencies[i] should
                       contain the parse for sentences[i]).
     """
-
     ### YOUR CODE HERE
+    dependencies = list()
+    pp = list()
+    for _, sentence in enumerate(sentences):
+        # print (sentence)
+        pp.append(PartialParse(sentence))
+    loop = True
+    while loop:
+        loop = False
+        transitions = model.predict(pp)
+        # print("Transitions: ", transitions)
+        for idx in range(len(transitions)):
+            action = transitions.pop(0)
+            pp[idx].parse_step(action)
+            if len(pp[idx].stack) > 1:
+                loop = True
+    dependencies = [p.dependencies for p in pp]
     ### END YOUR CODE
 
+    
     return dependencies
 
 
@@ -132,7 +148,7 @@ class DummyModel:
     the sentence is "right", "left" if otherwise.
     """
     def predict(self, partial_parses):
-        return [("RA" if pp.stack[1] is "right" else "LA") if len(pp.buffer) == 0 else "S"
+        return [("RA" if pp.stack[1] is "right" else "LA") if len(pp.stack) > 1 and len(pp.buffer) == 0 else "S"
                 for pp in partial_parses]
 
 
