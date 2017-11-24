@@ -91,11 +91,11 @@ class SoftmaxModel(Model):
             pred: A tensor of shape (batch_size, n_classes)
         """
         ### YOUR CODE HERE
-        #W = tf.Variable(np.zeros((self.config.n_features,self.config.n_classes)),dtype=tf.float32)
-        #b = tf.Variable(np.zeros((self.config.batch_size,self.config.n_classes)),dtype=tf.float32)
-        W = tf.get_variable("W", shape=[self.config.n_features, self.config.n_classes], initializer=tf.random_normal_initializer(0.7, 0.1))
+        W = tf.Variable(np.zeros((self.config.n_features,self.config.n_classes)),dtype=tf.float32)
+        b = tf.Variable(np.zeros((self.config.batch_size,self.config.n_classes)),dtype=tf.float32)
+        #W = tf.Variable("W", shape=(self.config.n_features, self.config.n_classes), initializer=tf.random_normal_initializer(0.7, 0.1))
         # W = tf.Variable(tf.random_normal(shape=[self.config.n_features, self.config.n_classes], dtype=tf.float32, name="weights"))
-        b = tf.get_variable("b", shape=[self.config.n_classes], initializer=tf.constant_initializer(1.0))
+        #b = tf.Variable("b", shape=(self.config.n_classes), initializer=tf.constant_initializer(1.0))
         pred = softmax(tf.matmul(self.input_placeholder,W) + b)
         ### END YOUR CODE
         return pred
@@ -135,7 +135,7 @@ class SoftmaxModel(Model):
             train_op: The Op for training.
         """
         ### YOUR CODE HERE
-        sess = tf.Session()
+        #sess = tf.Session()
         train_op = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
 
         ### END YOUR CODE
